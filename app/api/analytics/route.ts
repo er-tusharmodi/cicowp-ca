@@ -5,6 +5,8 @@ import Case from "@/models/Case";
 import { getSession } from "@/lib/auth";
 import { startOfDay, subDays, endOfDay } from "date-fns";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   try {
     const session = await getSession();
