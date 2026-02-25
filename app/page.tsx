@@ -49,11 +49,14 @@ export default function Home() {
         cache: "no-store",
       });
       if (settingsResponse.ok) {
-        const grouped = await settingsResponse.json();
+        const grouped = (await settingsResponse.json()) as Record<
+          string,
+          Setting[]
+        >;
         // Flatten grouped settings
         const flat: Settings = {};
-        Object.values(grouped).forEach((categorySettings: Setting[]) => {
-          (categorySettings as Setting[]).forEach((setting: Setting) => {
+        Object.values(grouped).forEach((categorySettings) => {
+          categorySettings.forEach((setting: Setting) => {
             flat[setting.key] = setting;
           });
         });
