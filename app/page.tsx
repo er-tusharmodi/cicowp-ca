@@ -5,105 +5,37 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useState, useEffect } from "react";
 
-const topics = [
-  {
-    title: "Benefits",
-    description:
-      "EI, family and sickness leave, pensions, housing, student aid, disabilities.",
-    href: "https://www.canada.ca/en/services/benefits.html",
-  },
-  {
-    title: "Business and industry",
-    description:
-      "Starting a business, permits, copyrights, support, and government selling.",
-    href: "https://www.canada.ca/en/services/business.html",
-  },
-  {
-    title: "Canada and the world",
-    description:
-      "Foreign policy, trade agreements, development work, and global issues.",
-    href: "https://www.international.gc.ca/world-monde/index.aspx?lang=eng",
-  },
-  {
-    title: "Culture, history and sport",
-    description:
-      "Arts, media, heritage, official languages, and national identity.",
-    href: "https://www.canada.ca/en/services/culture.html",
-  },
-  {
-    title: "Environment and natural resources",
-    description:
-      "Weather, climate, agriculture, wildlife, pollution, and conservation.",
-    href: "https://www.canada.ca/en/services/environment.html",
-  },
-  {
-    title: "Health",
-    description:
-      "Food, nutrition, diseases, vaccines, drugs, safety, and recalls.",
-    href: "https://www.canada.ca/en/services/health.html",
-  },
-  {
-    title: "Indigenous peoples",
-    description:
-      "Programs and services for First Nations, Inuit, and Metis communities.",
-    href: "https://www.canada.ca/en/indigenous-northern-affairs.html",
-  },
-  {
-    title: "Money and finances",
-    description:
-      "Personal finance, credit reports, fraud protection, and education support.",
-    href: "https://www.canada.ca/en/services/finance.html",
-  },
-  {
-    title: "National security and defence",
-    description:
-      "Military, border security, cyber security, and counter-terrorism.",
-    href: "https://www.canada.ca/en/services/defence.html",
-  },
-  {
-    title: "Policing, justice and emergencies",
-    description:
-      "Public safety, justice system, preparedness, and victim services.",
-    href: "https://www.canada.ca/en/services/policing.html",
-  },
-  {
-    title: "Science and innovation",
-    description: "Research on health, environment, space, grants, and funding.",
-    href: "https://www.canada.ca/en/services/science.html",
-  },
-  {
-    title: "Taxes",
-    description:
-      "Income tax, payroll, GST/HST, limits, credits, and charities.",
-    href: "https://www.canada.ca/en/services/taxes.html",
-  },
-  {
-    title: "Transport and infrastructure",
-    description: "Aviation, marine, road, rail, dangerous goods, and projects.",
-    href: "https://www.canada.ca/en/services/transport.html",
-  },
-  {
-    title: "Travel and tourism",
-    description:
-      "Travel advice, advisories, passports, events, attractions, and visits.",
-    href: "https://travel.gc.ca/",
-  },
-  {
-    title: "Veterans",
-    description:
-      "Services for current and former military, RCMP, and families.",
-    href: "https://www.canada.ca/en/services/veterans-military.html",
-  },
-  {
-    title: "Youth",
-    description: "Programs and services for teenagers and young adults.",
-    href: "https://www.canada.ca/en/services/youth.html",
-  },
-];
+interface Topic {
+  _id: string;
+  title: string;
+  description: string;
+  href: string;
+}
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredTopics, setFilteredTopics] = useState(topics);
+  const [topics, setTopics] = useState<Topic[]>([]);
+  const [filteredTopics, setFilteredTopics] = useState<Topic[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchTopics();
+  }, []);
+
+  const fetchTopics = async () => {
+    try {
+      const response = await fetch("/api/topics?active=true");
+      if (response.ok) {
+        const result = await response.json();
+        setTopics(result.data || []);
+        setFilteredTopics(result.data || []);
+      }
+    } catch (error) {
+      console.error("Failed to fetch topics:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     const q = searchQuery.trim().toLowerCase();
@@ -296,41 +228,48 @@ export default function Home() {
               </label>
             </div>
 
-            <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-              {filteredTopics.map((topic, index) => (
-                <a
-                  key={index}
-                  href={topic.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group card-shine relative rounded-2xl border border-ink/10 bg-mist p-5 transition hover:-translate-y-1 hover:border-pine/35 hover:bg-white hover:shadow-soft"
-                >
-                  <span className="block h-1 w-16 rounded-full bg-gradient-to-r from-pine to-sky"></span>
-                  <h3 className="mt-4 font-display text-xl font-semibold text-ink">
-                    {topic.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink/70">
-                    {topic.description}
-                  </p>
-                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-pine">
-                    Open topic
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                      className="h-4 w-4 transition group-hover:translate-x-1"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M3 10a.75.75 0 0 1 .75-.75h10.69l-2.72-2.72a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 1 1-1.06-1.06l2.72-2.72H3.75A.75.75 0 0 1 3 10Z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </span>
-                </a>
-              ))}
-            </div>
-            {filteredTopics.length === 0 && (
+            {loading ? (
+              <div className="mt-6 text-center py-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-pine mx-auto"></div>
+                <p className="mt-4 text-sm text-ink/65">Loading topics...</p>
+              </div>
+            ) : (
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+                {filteredTopics.map((topic) => (
+                  <a
+                    key={topic._id}
+                    href={topic.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group card-shine relative rounded-2xl border border-ink/10 bg-mist p-5 transition hover:-translate-y-1 hover:border-pine/35 hover:bg-white hover:shadow-soft"
+                  >
+                    <span className="block h-1 w-16 rounded-full bg-gradient-to-r from-pine to-sky"></span>
+                    <h3 className="mt-4 font-display text-xl font-semibold text-ink">
+                      {topic.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-ink/70">
+                      {topic.description}
+                    </p>
+                    <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-pine">
+                      Open topic
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                        className="h-4 w-4 transition group-hover:translate-x-1"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M3 10a.75.75 0 0 1 .75-.75h10.69l-2.72-2.72a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 1 1-1.06-1.06l2.72-2.72H3.75A.75.75 0 0 1 3 10Z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </span>
+                  </a>
+                ))}
+              </div>
+            )}
+            {!loading && filteredTopics.length === 0 && (
               <p className="mt-4 text-sm text-ink/65">
                 No matching topics. Try another keyword.
               </p>

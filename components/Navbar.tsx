@@ -1,17 +1,51 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+interface DynamicPage {
+  _id: string;
+  title: string;
+  slug: string;
+  showInNav: boolean;
+  navOrder: number;
+}
+
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dynamicPages, setDynamicPages] = useState<DynamicPage[]>([]);
   const pathname = usePathname();
 
-  const navigation = [
+  useEffect(() => {
+    fetchNavigationPages();
+  }, []);
+
+  const fetchNavigationPages = async () => {
+    try {
+      const response = await fetch("/api/pages?published=true&showInNav=true");
+      if (response.ok) {
+        const result = await response.json();
+        setDynamicPages(result.data || []);
+      }
+    } catch (error) {
+      console.error("Failed to fetch navigation pages:", error);
+    }
+  };
+
+  const staticNavigation = [
     { name: "Home", href: "/", key: "home" },
     { name: "Check Status", href: "/check-status", key: "check" },
     { name: "OWP", href: "/owp", key: "owp" },
+  ];
+
+  const allNavigation = [
+    ...staticNavigation,
+    ...dynamicPages.map((page) => ({
+      name: page.title,
+      href: `/pages/${page.slug}`,
+      key: `page-${page._id}`,
+    })),
     { name: "Contact", href: "/contact", key: "contact" },
   ];
 
@@ -55,7 +89,7 @@ export default function Navbar() {
           className="hidden items-center gap-1 text-sm font-medium md:flex"
           aria-label="Main navigation"
         >
-          {navigation.slice(0, 3).map((item) => (
+          {allNavigation.slice(0, -1).map((item) => (
             <Link
               key={item.key}
               href={item.href}
@@ -88,7 +122,7 @@ export default function Navbar() {
           aria-label="Mobile navigation"
         >
           <div className="mx-auto flex max-w-7xl flex-col gap-2 pt-4 text-sm font-medium">
-            {navigation.map((item) => (
+            {allNavigation.map((item) => (
               <Link
                 key={item.key}
                 href={item.href}
