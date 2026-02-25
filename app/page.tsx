@@ -68,8 +68,7 @@ const topics = [
   },
   {
     title: "Science and innovation",
-    description:
-      "Research on health, environment, space, grants, and funding.",
+    description: "Research on health, environment, space, grants, and funding.",
     href: "https://www.canada.ca/en/services/science.html",
   },
   {
@@ -80,8 +79,7 @@ const topics = [
   },
   {
     title: "Transport and infrastructure",
-    description:
-      "Aviation, marine, road, rail, dangerous goods, and projects.",
+    description: "Aviation, marine, road, rail, dangerous goods, and projects.",
     href: "https://www.canada.ca/en/services/transport.html",
   },
   {
@@ -112,7 +110,7 @@ export default function Home() {
     const filtered = topics.filter(
       (topic) =>
         topic.title.toLowerCase().includes(q) ||
-        topic.description.toLowerCase().includes(q)
+        topic.description.toLowerCase().includes(q),
     );
     setFilteredTopics(filtered);
   }, [searchQuery]);
@@ -129,7 +127,7 @@ export default function Home() {
           }
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     );
 
     revealItems.forEach((item) => revealObserver.observe(item));
@@ -343,22 +341,5 @@ export default function Home() {
 
       <Footer />
     </>
-  );
-}
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Our team is ready to assist you with any questions or
-                    concerns
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <Footer />
-    </div>
   );
 }

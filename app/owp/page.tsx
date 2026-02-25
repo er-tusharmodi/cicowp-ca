@@ -1,289 +1,293 @@
+"use client";
+
+import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileText, AlertCircle, CheckCircle, Info } from "lucide-react";
 
 export default function OWPPage() {
+  useEffect(() => {
+    // Reveal animation observer
+    const revealItems = document.querySelectorAll(".reveal");
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 },
+    );
+
+    revealItems.forEach((item) => revealObserver.observe(item));
+
+    return () => {
+      revealItems.forEach((item) => revealObserver.unobserve(item));
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-primary/5 via-background to-accent/5">
+    <>
       <Navbar />
 
-      <main className="flex-1 container mx-auto px-4 py-12">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-3">
-              Open Work Permit (OWP) Information
-            </h1>
-            <p className="text-lg text-muted-foreground">
-              Everything you need to know about Canadian Open Work Permits
-            </p>
+      <main>
+        <section className="mx-auto max-w-7xl px-4 pb-10 pt-12 sm:px-6 lg:px-8">
+          <div className="grid items-center gap-8 lg:grid-cols-12">
+            <div className="reveal lg:col-span-7">
+              <p className="inline-flex rounded-full border border-sky/30 bg-sky/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-sky">
+                OWP Guide
+              </p>
+              <h1 className="mt-4 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">
+                What is an open work permit?
+              </h1>
+              <p className="mt-4 max-w-3xl text-base leading-relaxed text-ink/75 sm:text-lg">
+                An open work permit is not job-specific. It generally allows
+                work for any employer for a period of time, subject to
+                immigration rules and restrictions.
+              </p>
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                <div className="rounded-xl border border-ink/10 bg-white p-4 shadow-soft">
+                  <p className="text-xs uppercase tracking-[0.12em] text-ink/55">
+                    LMIA
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-ink">
+                    Usually not required
+                  </p>
+                </div>
+                <div className="rounded-xl border border-ink/10 bg-white p-4 shadow-soft">
+                  <p className="text-xs uppercase tracking-[0.12em] text-ink/55">
+                    Employer
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-ink">
+                    Not job-specific
+                  </p>
+                </div>
+                <div className="rounded-xl border border-ink/10 bg-white p-4 shadow-soft">
+                  <p className="text-xs uppercase tracking-[0.12em] text-ink/55">
+                    Restrictions
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-ink">
+                    May apply by case
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="reveal lg:col-span-5">
+              <div className="overflow-hidden rounded-3xl border border-ink/10 bg-white p-3 shadow-soft">
+                <img
+                  src="https://cicowp-ca.com/public/images/1710757242_d5198760e363a0011486.jpeg"
+                  alt="Open work permit overview"
+                  className="h-72 w-full rounded-2xl object-cover"
+                  loading="lazy"
+                />
+              </div>
+            </div>
           </div>
+        </section>
 
-          {/* Overview */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Info className="w-5 h-5 mr-2 text-primary" />
-                What is an Open Work Permit?
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-muted-foreground">
-              <p>
-                An Open Work Permit (OWP) allows foreign nationals to work in
-                Canada for any employer, with some exceptions. Unlike
-                employer-specific work permits, an open work permit is not
-                job-specific and typically does not require a Labour Market
-                Impact Assessment (LMIA).
+        <section className="mx-auto grid max-w-7xl gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-12 lg:px-8">
+          <article className="reveal space-y-6 lg:col-span-8">
+            <section
+              id="overview"
+              className="rounded-3xl border border-ink/10 bg-white p-6 shadow-soft sm:p-8"
+            >
+              <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
+                Overview
+              </h2>
+              <div className="mt-4 space-y-3 text-sm leading-relaxed text-ink/80 sm:text-base">
+                <p>
+                  Because open work permits are not job-specific, applicants
+                  typically do not need a Labour Market Impact Assessment
+                  (LMIA), and generally do not need employer-portal offer
+                  details tied to one employer.
+                </p>
+                <p>
+                  In many cases, the open work permit holder fee is paid
+                  together with the work permit fee.
+                </p>
+              </div>
+            </section>
+
+            <section
+              id="important"
+              className="rounded-3xl border border-ink/10 bg-white p-6 shadow-soft sm:p-8"
+            >
+              <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
+                Important conditions
+              </h2>
+              <p className="mt-4 text-sm leading-relaxed text-ink/80 sm:text-base">
+                Even when employer name is unrestricted, temporary residents
+                remain subject to IRPR conditions. Work is restricted for
+                employers or services listed under relevant regulations.
               </p>
-              <p>
-                Open work permits provide greater flexibility for workers and
-                are often issued to support specific immigration programs or
-                humanitarian reasons.
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Types */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <FileText className="w-5 h-5 mr-2 text-primary" />
-                Types of Open Work Permits
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <h3 className="font-semibold text-lg mb-2">
-                  1. Unrestricted Open Work Permits
-                </h3>
-                <p className="text-muted-foreground">
-                  These permits allow you to work for any employer in Canada
-                  without restrictions. Common examples include:
-                </p>
-                <ul className="list-disc list-inside ml-4 mt-2 space-y-1 text-muted-foreground">
-                  <li>
-                    Spouse or common-law partner of a skilled worker or
-                    international student
-                  </li>
-                  <li>Post-Graduation Work Permit (PGWP) holders</li>
-                  <li>Permanent residence applicants in Canada</li>
-                  <li>Protected persons or refugee claimants</li>
-                </ul>
-              </div>
-
-              <div className="pt-4">
-                <h3 className="font-semibold text-lg mb-2">
-                  2. Restricted Open Work Permits
-                </h3>
-                <p className="text-muted-foreground">
-                  These permits have some limitations, such as restrictions on:
-                </p>
-                <ul className="list-disc list-inside ml-4 mt-2 space-y-1 text-muted-foreground">
-                  <li>Geographic location where you can work</li>
-                  <li>Type of work or industry</li>
-                  <li>Specific conditions noted on the permit</li>
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Important Conditions */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <AlertCircle className="w-5 h-5 mr-2 text-primary" />
-                Important Conditions & Restrictions
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <p className="text-sm font-medium text-yellow-900 mb-2">
-                  Even with an open work permit, you cannot work in certain
-                  situations:
-                </p>
-                <ul className="list-disc list-inside space-y-1 text-sm text-yellow-800">
-                  <li>
-                    In businesses related to erotic massage, escort services, or
-                    adult entertainment
-                  </li>
-                  <li>
-                    If you do not meet the conditions stated on your work permit
-                  </li>
-                  <li>
-                    Without meeting provincial/territorial licensing
-                    requirements for your occupation
-                  </li>
-                </ul>
-              </div>
-
-              <div>
-                <h3 className="font-semibold mb-2">Medical Conditions</h3>
-                <p className="text-muted-foreground text-sm">
-                  Certain occupations may require a medical examination,
-                  including:
-                </p>
-                <ul className="list-disc list-inside ml-4 mt-2 space-y-1 text-sm text-muted-foreground">
-                  <li>Healthcare workers (doctors, nurses, lab technicians)</li>
-                  <li>Workers in contact with children or elderly</li>
-                  <li>Agricultural workers in live animal care</li>
-                  <li>Elementary or secondary school teachers</li>
-                </ul>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Eligibility */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <CheckCircle className="w-5 h-5 mr-2 text-primary" />
-                Who Can Apply?
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 text-muted-foreground">
-              <p>You may be eligible for an open work permit if you are:</p>
-              <ul className="list-disc list-inside space-y-2 ml-4">
+              <ul className="mt-4 list-disc pl-5 text-sm leading-relaxed text-ink/80 sm:text-base space-y-2">
                 <li>
-                  <strong>An international student</strong> who graduated from a
-                  designated Canadian institution and are eligible for the
-                  Post-Graduation Work Permit Program
+                  Restrictions can apply under IRPR subsection 183(1) and
+                  related clauses.
                 </li>
                 <li>
-                  <strong>A spouse or common-law partner</strong> of a skilled
-                  worker or international student in Canada
-                </li>
-                <li>
-                  <strong>A refugee claimant</strong> or protected person in
-                  Canada
-                </li>
-                <li>
-                  <strong>A permanent residence applicant</strong> with an
-                  application in progress
-                </li>
-                <li>
-                  <strong>A temporary resident permit holder</strong> who
-                  requires a work permit
-                </li>
-                <li>
-                  <strong>A young person</strong> participating in special
-                  programs like International Experience Canada (IEC)
+                  Certain employer categories and services are explicitly
+                  prohibited.
                 </li>
               </ul>
-            </CardContent>
-          </Card>
+            </section>
 
-          {/* Application Process */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>How to Apply</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4 text-muted-foreground">
-              <p>
-                The application process varies depending on your situation.
-                Generally, you will need to:
-              </p>
-              <ol className="list-decimal list-inside space-y-2 ml-4">
-                <li>Determine your eligibility for an open work permit</li>
+            <section
+              id="types"
+              className="rounded-3xl border border-ink/10 bg-white p-6 shadow-soft sm:p-8"
+            >
+              <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
+                Types of open work permits
+              </h2>
+              <ul className="mt-4 list-disc pl-5 text-sm leading-relaxed text-ink/80 sm:text-base space-y-2">
                 <li>
-                  Gather required documents (identity documents, proof of
-                  eligibility, photos, etc.)
-                </li>
-                <li>Pay the application fee</li>
-                <li>
-                  Submit your application online or at a visa application centre
-                </li>
-                <li>Provide biometrics if required</li>
-                <li>Wait for processing (times vary by application type)</li>
-              </ol>
-              <div className="mt-4 p-4 bg-primary/5 border border-primary/20 rounded-lg">
-                <p className="text-sm">
-                  <strong>Note:</strong> For the most up-to-date information and
-                  to submit an application, visit the official{" "}
-                  <a
-                    href="https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/permit/temporary/work-permit.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-primary hover:underline"
-                  >
-                    Immigration, Refugees and Citizenship Canada (IRCC)
-                  </a>{" "}
-                  website.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Processing Notes */}
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>Processing & Coding Notes for Officers</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted-foreground">
-              <p>
-                Immigration officers use specific codes and notes when
-                processing work permits. Common coding includes:
-              </p>
-              <ul className="list-disc list-inside space-y-1 ml-4">
-                <li>
-                  <strong>IRPR R186:</strong> Various subsections covering
-                  different categories of open work permits
+                  <strong>Unrestricted:</strong> work in any occupation and
+                  location.
                 </li>
                 <li>
-                  <strong>R205(a):</strong> For certain humanitarian or
-                  compassionate considerations
+                  <strong>Restricted:</strong> occupation or location
+                  restrictions may apply.
                 </li>
                 <li>
-                  <strong>R207:</strong> For cases where public policy
-                  considerations apply
-                </li>
-                <li>
-                  <strong>R208:</strong> For vulnerable workers in specific
-                  situations
+                  Medical and category-based restrictions may be added where
+                  required.
                 </li>
               </ul>
-              <p className="mt-4">
-                These codes help ensure consistent processing and identify which
-                category of open work permit an applicant falls under.
-              </p>
-            </CardContent>
-          </Card>
+            </section>
 
-          {/* Resources */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Helpful Resources</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <a
-                href="https://www.canada.ca/en/immigration-refugees-citizenship.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-primary hover:underline"
-              >
-                → Immigration, Refugees and Citizenship Canada (IRCC)
-              </a>
-              <a
-                href="https://www.canada.ca/en/immigration-refugees-citizenship/services/application/application-forms-guides/guide-5553-applying-change-conditions-extend-your-stay-canada-worker.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-primary hover:underline"
-              >
-                → Work Permit Extension Guide
-              </a>
-              <a
-                href="https://www.canada.ca/en/immigration-refugees-citizenship/corporate/publications-manuals/operational-bulletins-manuals/temporary-residents/foreign-workers.html"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-primary hover:underline"
-              >
-                → Foreign Workers Manual (for detailed regulations)
-              </a>
-            </CardContent>
-          </Card>
-        </div>
+            <section
+              id="coding"
+              className="rounded-3xl border border-ink/10 bg-white p-6 shadow-soft sm:p-8"
+            >
+              <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
+                Coding and processing notes
+              </h2>
+              <ul className="mt-4 list-disc pl-5 text-sm leading-relaxed text-ink/80 sm:text-base space-y-2">
+                <li>
+                  Employer and location may be marked unspecified/unknown for
+                  unrestricted open permits.
+                </li>
+                <li>
+                  Occupation may be coded under NOC 9999 where applicable.
+                </li>
+                <li>
+                  Medical results and surveillance requirements can affect
+                  permit conditions.
+                </li>
+              </ul>
+            </section>
+
+            <section
+              id="medical"
+              className="rounded-3xl border border-ink/10 bg-white p-6 shadow-soft sm:p-8"
+            >
+              <h2 className="font-display text-2xl font-semibold tracking-tight text-ink">
+                Medical condition examples
+              </h2>
+              <p className="mt-4 text-sm leading-relaxed text-ink/80 sm:text-base">
+                Where no medical exam was completed, restrictions may be applied
+                based on whether a person has lived in a designated or
+                non-designated country.
+              </p>
+              <ul className="mt-4 list-disc pl-5 text-sm leading-relaxed text-ink/80 sm:text-base space-y-2">
+                <li>
+                  Restrictions often include child care, primary/secondary
+                  teaching, and health service occupations.
+                </li>
+                <li>
+                  Additional agriculture restrictions may apply depending on
+                  country designation.
+                </li>
+              </ul>
+            </section>
+          </article>
+
+          <aside className="reveal space-y-6 lg:col-span-4">
+            <div className="rounded-3xl border border-ink/10 bg-white p-6 shadow-soft">
+              <h3 className="font-display text-xl font-semibold text-ink">
+                On this page
+              </h3>
+              <nav className="mt-4 grid gap-2 text-sm">
+                <a
+                  className="rounded-xl bg-mist px-3 py-2 transition hover:bg-white hover:shadow-soft"
+                  href="#overview"
+                >
+                  Overview
+                </a>
+                <a
+                  className="rounded-xl bg-mist px-3 py-2 transition hover:bg-white hover:shadow-soft"
+                  href="#important"
+                >
+                  Important conditions
+                </a>
+                <a
+                  className="rounded-xl bg-mist px-3 py-2 transition hover:bg-white hover:shadow-soft"
+                  href="#types"
+                >
+                  Types
+                </a>
+                <a
+                  className="rounded-xl bg-mist px-3 py-2 transition hover:bg-white hover:shadow-soft"
+                  href="#coding"
+                >
+                  Coding notes
+                </a>
+                <a
+                  className="rounded-xl bg-mist px-3 py-2 transition hover:bg-white hover:shadow-soft"
+                  href="#medical"
+                >
+                  Medical conditions
+                </a>
+              </nav>
+            </div>
+
+            <div className="rounded-3xl border border-sky/30 bg-sky/5 p-6">
+              <h3 className="font-display text-xl font-semibold text-ink">
+                Official references
+              </h3>
+              <div className="mt-4 grid gap-2 text-sm">
+                <a
+                  className="rounded-xl bg-white px-3 py-2 transition hover:border hover:border-sky/30"
+                  href="http://www.cic.gc.ca/english/information/fees/fees.asp"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  IRCC fee list
+                </a>
+                <a
+                  className="rounded-xl bg-white px-3 py-2 transition hover:border hover:border-sky/30"
+                  href="http://laws-lois.justice.gc.ca/eng/regulations/SOR-2002-227/section-183.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  IRPR 183(1)
+                </a>
+                <a
+                  className="rounded-xl bg-white px-3 py-2 transition hover:border hover:border-sky/30"
+                  href="http://laws-lois.justice.gc.ca/eng/regulations/SOR-2002-227/section-200.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  IRPR 200
+                </a>
+                <a
+                  className="rounded-xl bg-white px-3 py-2 transition hover:border hover:border-sky/30"
+                  href="https://www.canada.ca/en/immigration-refugees-citizenship/services/application/medical-police/medical-exams/requirements-temporary-residents/country-requirements.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Country medical requirements
+                </a>
+              </div>
+            </div>
+          </aside>
+        </section>
       </main>
 
       <Footer />
-    </div>
+    </>
   );
 }

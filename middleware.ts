@@ -1,25 +1,11 @@
-import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export default withAuth(
-  function middleware(req) {
-    return NextResponse.next();
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        // Protect all /admin routes except /admin/login
-        if (req.nextUrl.pathname.startsWith("/admin")) {
-          if (req.nextUrl.pathname === "/admin/login") {
-            return true;
-          }
-          return !!token;
-        }
-        return true;
-      },
-    },
-  },
-);
+export function middleware(request: NextRequest) {
+  // For admin routes (except login), we'll handle auth check on the server side
+  // This middleware just allows the request to pass through
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: ["/admin/:path*"],
