@@ -4,6 +4,7 @@ import Admin from "../models/Admin";
 import Case from "../models/Case";
 import Page from "../models/Page";
 import Topic from "../models/Topic";
+import Setting from "../models/Setting";
 
 async function seed() {
   console.log("Starting database seed...");
@@ -356,6 +357,388 @@ async function seed() {
       console.log(`✅ Created ${sampleTopics.length} sample topics`);
     } else {
       console.log(`⚠️  ${topicCount} topics already exist`);
+    }
+
+    // Create default settings
+    const settingCount = await Setting.countDocuments();
+
+    if (settingCount === 0) {
+      const defaultSettings = [
+        // Hero Section
+        {
+          key: "hero_badge",
+          value: "Welcome to CICOWP",
+          type: "string",
+          category: "hero",
+          label: "Hero Badge",
+          placeholder: "Badge text",
+          description: "Text displayed in the hero badge",
+        },
+        {
+          key: "hero_title",
+          value: "Navigate Canadian Immigration with Confidence",
+          type: "string",
+          category: "hero",
+          label: "Hero Title",
+          placeholder: "Hero headline",
+          description: "Main headline on homepage hero",
+        },
+        {
+          key: "hero_subtitle",
+          value:
+            "Your trusted companion for understanding immigration programs, assessing eligibility, and planning your pathway to Canada.",
+          type: "textarea",
+          category: "hero",
+          label: "Hero Subtitle",
+          placeholder: "Hero description",
+          description: "Subtitle text on hero section",
+        },
+        {
+          key: "hero_cta_primary_text",
+          value: "Start Assessment",
+          type: "string",
+          category: "hero",
+          label: "Primary CTA Text",
+          placeholder: "Button text",
+        },
+        {
+          key: "hero_cta_primary_url",
+          value: "/services",
+          type: "url",
+          category: "hero",
+          label: "Primary CTA URL",
+          placeholder: "/path-to-page",
+        },
+        {
+          key: "hero_cta_secondary_text",
+          value: "Learn More",
+          type: "string",
+          category: "hero",
+          label: "Secondary CTA Text",
+          placeholder: "Button text",
+        },
+        {
+          key: "hero_cta_secondary_url",
+          value: "/about",
+          type: "url",
+          category: "hero",
+          label: "Secondary CTA URL",
+          placeholder: "/path-to-page",
+        },
+        {
+          key: "hero_image",
+          value: "",
+          type: "image",
+          category: "hero",
+          label: "Hero Image",
+          description: "Background or side image for the hero section",
+          placeholder: "Upload an image",
+        },
+        {
+          key: "hero_image_secondary",
+          value: "",
+          type: "image",
+          category: "hero",
+          label: "Hero Image (Secondary)",
+          description: "Second image displayed in the hero card",
+          placeholder: "Upload an image",
+        },
+        // Stats Section
+        {
+          key: "stat_1_number",
+          value: "50k+",
+          type: "string",
+          category: "stats",
+          label: "Stat 1 - Number",
+          placeholder: "e.g., 50k+",
+        },
+        {
+          key: "stat_1_label",
+          value: "People Helped",
+          type: "string",
+          category: "stats",
+          label: "Stat 1 - Label",
+          placeholder: "e.g., People Helped",
+        },
+        {
+          key: "stat_1_description",
+          value: "Successfully guided through immigration process",
+          type: "string",
+          category: "stats",
+          label: "Stat 1 - Description",
+          placeholder: "Stat description",
+        },
+        {
+          key: "stat_2_number",
+          value: "15+",
+          type: "string",
+          category: "stats",
+          label: "Stat 2 - Number",
+          placeholder: "e.g., 15+",
+        },
+        {
+          key: "stat_2_label",
+          value: "Programs Covered",
+          type: "string",
+          category: "stats",
+          label: "Stat 2 - Label",
+          placeholder: "e.g., Programs Covered",
+        },
+        {
+          key: "stat_2_description",
+          value: "Federal, provincial, and specialized pathways",
+          type: "string",
+          category: "stats",
+          label: "Stat 2 - Description",
+          placeholder: "Stat description",
+        },
+        {
+          key: "stat_3_number",
+          value: "98%",
+          type: "string",
+          category: "stats",
+          label: "Stat 3 - Number",
+          placeholder: "e.g., 98%",
+        },
+        {
+          key: "stat_3_label",
+          value: "Satisfaction Rate",
+          type: "string",
+          category: "stats",
+          label: "Stat 3 - Label",
+          placeholder: "e.g., Satisfaction Rate",
+        },
+        {
+          key: "stat_3_description",
+          value: "From users finding their ideal pathway",
+          type: "string",
+          category: "stats",
+          label: "Stat 3 - Description",
+          placeholder: "Stat description",
+        },
+        // Quick Links
+        {
+          key: "quicklinks_data",
+          value: JSON.stringify([
+            { text: "Work in Canada", href: "/work" },
+            { text: "Study in Canada", href: "/study" },
+            { text: "Business Immigration", href: "/business" },
+            { text: "Family Class", href: "/family" },
+          ]),
+          type: "json",
+          category: "quicklinks",
+          label: "Quick Links",
+          description: "JSON array of {text, href} objects",
+        },
+        // Footer Section
+        {
+          key: "footer_about_title",
+          value: "About CICOWP",
+          type: "string",
+          category: "footer",
+          label: "About Section Title",
+          placeholder: "e.g., About CICOWP",
+        },
+        {
+          key: "footer_about_text",
+          value:
+            "CICOWP is dedicated to demystifying Canadian immigration. We provide clear information, assessment tools, and resources to help you navigate your immigration journey.",
+          type: "textarea",
+          category: "footer",
+          label: "About Section Text",
+          placeholder: "About description",
+        },
+        {
+          key: "footer_copyright",
+          value: "© 2026 CICOWP. All rights reserved.",
+          type: "string",
+          category: "footer",
+          label: "Copyright Text",
+          placeholder: "e.g., © 2026 Company Name",
+        },
+        {
+          key: "footer_useful_links",
+          value: JSON.stringify([
+            {
+              text: "Departments and agencies",
+              href: "https://www.canada.ca/en/government/dept.html",
+            },
+            { text: "News", href: "https://www.canada.ca/en/news.html" },
+            { text: "Open Government", href: "https://open.canada.ca/en" },
+            { text: "Prime Minister", href: "https://www.pm.gc.ca/en" },
+          ]),
+          type: "json",
+          category: "footer",
+          label: "Useful Links",
+          description:
+            "JSON array of {text, href} objects for footer useful links section",
+        },
+        // General Settings
+        {
+          key: "site_name",
+          value: "CICOWP - Canadian Immigration",
+          type: "string",
+          category: "general",
+          label: "Site Name",
+          placeholder: "Your site name",
+        },
+        {
+          key: "site_logo",
+          value: "",
+          type: "image",
+          category: "general",
+          label: "Site Logo",
+          description: "Logo displayed in the top navigation",
+          placeholder: "Upload a logo image",
+        },
+        {
+          key: "site_favicon",
+          value: "",
+          type: "image",
+          category: "general",
+          label: "Site Favicon",
+          description: "Browser tab icon",
+          placeholder: "Upload a favicon",
+        },
+        {
+          key: "site_description",
+          value: "Navigate Canadian immigration programs with confidence",
+          type: "textarea",
+          category: "general",
+          label: "Site Description",
+          placeholder: "Site tagline or description",
+        },
+        {
+          key: "site_email",
+          value: "info@cicowp-ca.com",
+          type: "string",
+          category: "general",
+          label: "Contact Email",
+          placeholder: "contact@example.com",
+        },
+        // SEO Settings
+        {
+          key: "seo_meta_title",
+          value: "CICOWP | Navigate Canadian Immigration with Confidence",
+          type: "string",
+          category: "seo",
+          label: "Meta Title",
+          placeholder: "Page title for search engines",
+        },
+        {
+          key: "seo_meta_description",
+          value:
+            "Your trusted companion for understanding immigration programs, assessing eligibility, and planning your pathway to Canada.",
+          type: "textarea",
+          category: "seo",
+          label: "Meta Description",
+          placeholder: "Description for search engines",
+        },
+        {
+          key: "seo_meta_keywords",
+          value: "Canadian immigration, visa, pathway, assessment, programs",
+          type: "string",
+          category: "seo",
+          label: "Meta Keywords",
+          placeholder: "Comma-separated keywords",
+        },
+      ];
+
+      await Setting.insertMany(defaultSettings);
+      console.log(`✅ Created ${defaultSettings.length} default settings`);
+    } else {
+      console.log(`⚠️  ${settingCount} settings already exist`);
+    }
+
+    // Add missing footer_useful_links setting if it doesn't exist
+    const usefulLinksExists = await Setting.findOne({
+      key: "footer_useful_links",
+    });
+
+    if (!usefulLinksExists) {
+      await Setting.create({
+        key: "footer_useful_links",
+        value: JSON.stringify([
+          {
+            text: "Departments and agencies",
+            href: "https://www.canada.ca/en/government/dept.html",
+          },
+          { text: "News", href: "https://www.canada.ca/en/news.html" },
+          {
+            text: "Open Government",
+            href: "https://open.canada.ca/en",
+          },
+          { text: "Prime Minister", href: "https://www.pm.gc.ca/en" },
+        ]),
+        type: "json",
+        category: "footer",
+        label: "Useful Links",
+        description:
+          "JSON array of {text, href} objects for footer useful links section",
+      });
+      console.log("✅ Created footer_useful_links setting");
+    }
+
+    const heroImageExists = await Setting.findOne({ key: "hero_image" });
+
+    if (!heroImageExists) {
+      await Setting.create({
+        key: "hero_image",
+        value: "",
+        type: "image",
+        category: "hero",
+        label: "Hero Image",
+        description: "Background or side image for the hero section",
+        placeholder: "Upload an image",
+      });
+      console.log("✅ Created hero_image setting");
+    }
+
+    const heroImageSecondaryExists = await Setting.findOne({
+      key: "hero_image_secondary",
+    });
+
+    if (!heroImageSecondaryExists) {
+      await Setting.create({
+        key: "hero_image_secondary",
+        value: "",
+        type: "image",
+        category: "hero",
+        label: "Hero Image (Secondary)",
+        description: "Second image displayed in the hero card",
+        placeholder: "Upload an image",
+      });
+      console.log("✅ Created hero_image_secondary setting");
+    }
+
+    const siteLogoExists = await Setting.findOne({ key: "site_logo" });
+
+    if (!siteLogoExists) {
+      await Setting.create({
+        key: "site_logo",
+        value: "",
+        type: "image",
+        category: "general",
+        label: "Site Logo",
+        description: "Logo displayed in the top navigation",
+        placeholder: "Upload a logo image",
+      });
+      console.log("✅ Created site_logo setting");
+    }
+
+    const siteFaviconExists = await Setting.findOne({ key: "site_favicon" });
+
+    if (!siteFaviconExists) {
+      await Setting.create({
+        key: "site_favicon",
+        value: "",
+        type: "image",
+        category: "general",
+        label: "Site Favicon",
+        description: "Browser tab icon",
+        placeholder: "Upload a favicon",
+      });
+      console.log("✅ Created site_favicon setting");
     }
 
     console.log("\n✨ Database seeding completed successfully!");

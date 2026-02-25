@@ -12,6 +12,7 @@ import {
   X,
   FileText,
   Tag,
+  Settings,
 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -21,6 +22,7 @@ const navigation = [
   { name: "Cases", href: "/admin/cases", icon: FolderOpen },
   { name: "Topics", href: "/admin/topics", icon: Tag },
   { name: "Pages", href: "/admin/pages", icon: FileText },
+  { name: "CMS", href: "/admin/cms", icon: Settings },
   { name: "Admins", href: "/admin/admins", icon: Users },
 ];
 

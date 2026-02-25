@@ -12,26 +12,55 @@ interface Topic {
   href: string;
 }
 
+interface Setting {
+  key: string;
+  value: any;
+  type: string;
+  category: string;
+}
+
+interface Settings {
+  [key: string]: Setting;
+}
+
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [topics, setTopics] = useState<Topic[]>([]);
   const [filteredTopics, setFilteredTopics] = useState<Topic[]>([]);
+  const [settings, setSettings] = useState<Settings>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchTopics();
+    fetchData();
   }, []);
 
-  const fetchTopics = async () => {
+  const fetchData = async () => {
     try {
-      const response = await fetch("/api/topics?active=true");
-      if (response.ok) {
-        const result = await response.json();
+      // Fetch topics
+      const topicsResponse = await fetch("/api/topics?active=true");
+      if (topicsResponse.ok) {
+        const result = await topicsResponse.json();
         setTopics(result.data || []);
         setFilteredTopics(result.data || []);
       }
+
+      // Fetch settings
+      const settingsResponse = await fetch("/api/settings", {
+        cache: "no-store",
+      });
+      if (settingsResponse.ok) {
+        const grouped = await settingsResponse.json();
+        // Flatten grouped settings
+        const flat: Settings = {};
+        Object.values(grouped).forEach((categorySettings: Setting[]) => {
+          (categorySettings as Setting[]).forEach((setting: Setting) => {
+            flat[setting.key] = setting;
+          });
+        });
+        setSettings(flat);
+      }
     } catch (error) {
-      console.error("Failed to fetch topics:", error);
+      console.error("Failed to fetch data:", error);
     } finally {
       setLoading(false);
     }
@@ -45,7 +74,7 @@ export default function Home() {
         topic.description.toLowerCase().includes(q),
     );
     setFilteredTopics(filtered);
-  }, [searchQuery]);
+  }, [searchQuery, topics]);
 
   useEffect(() => {
     // Reveal animation observer
@@ -77,26 +106,28 @@ export default function Home() {
         <section className="mx-auto grid max-w-7xl items-center gap-8 px-4 pb-14 pt-12 sm:px-6 lg:grid-cols-12 lg:gap-10 lg:px-8 lg:pb-20 lg:pt-16">
           <div className="reveal space-y-8 lg:col-span-7">
             <p className="inline-flex items-center gap-2 rounded-full border border-pine/30 bg-white/90 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-pine">
-              Better access to public services
+              {settings.hero_badge?.value || "Welcome to CICOWP"}
             </p>
 
             <div className="space-y-5">
               <h1 className="font-display text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl lg:text-6xl">
-                A cleaner, faster front door for Canadian public information.
+                {settings.hero_title?.value ||
+                  "Navigate Canadian Immigration with Confidence"}
               </h1>
               <p className="max-w-2xl text-lg leading-relaxed text-ink/75">
-                Navigate priority government topics, check your status quickly,
-                and reach OWP resources without visual clutter or outdated
-                layouts.
+                {settings.hero_subtitle?.value ||
+                  "Your trusted companion for understanding immigration programs, assessing eligibility, and planning your pathway to Canada."}
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
               <Link
-                href="/check-status"
+                href={settings.hero_cta_primary_url?.value || "/services"}
                 className="card-shine inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3 text-sm font-semibold text-mist shadow-soft transition hover:bg-pine"
               >
-                <span>Check Status</span>
+                <span>
+                  {settings.hero_cta_primary_text?.value || "Start Assessment"}
+                </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
@@ -111,31 +142,39 @@ export default function Home() {
                 </svg>
               </Link>
               <Link
-                href="/owp"
+                href={settings.hero_cta_secondary_url?.value || "/about"}
                 className="inline-flex items-center gap-2 rounded-xl border border-ink/20 bg-white px-6 py-3 text-sm font-semibold text-ink transition hover:border-pine/40 hover:text-pine"
               >
-                <span>Open OWP</span>
+                <span>
+                  {settings.hero_cta_secondary_text?.value || "Learn More"}
+                </span>
               </Link>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-xl border border-ink/10 bg-white p-4 shadow-soft">
                 <p className="text-xs uppercase tracking-[0.12em] text-ink/55">
-                  Core Navigation
+                  {settings.stat_1_label?.value || "Stat 1"}
                 </p>
-                <p className="mt-2 text-xl font-semibold text-ink">Simple</p>
+                <p className="mt-2 text-xl font-semibold text-ink">
+                  {settings.stat_1_number?.value || "50k+"}
+                </p>
               </div>
               <div className="rounded-xl border border-ink/10 bg-white p-4 shadow-soft">
                 <p className="text-xs uppercase tracking-[0.12em] text-ink/55">
-                  Topic Access
+                  {settings.stat_2_label?.value || "Stat 2"}
                 </p>
-                <p className="mt-2 text-xl font-semibold text-ink">16 Areas</p>
+                <p className="mt-2 text-xl font-semibold text-ink">
+                  {settings.stat_2_number?.value || "15"}
+                </p>
               </div>
               <div className="rounded-xl border border-ink/10 bg-white p-4 shadow-soft">
                 <p className="text-xs uppercase tracking-[0.12em] text-ink/55">
-                  Design Goal
+                  {settings.stat_3_label?.value || "Stat 3"}
                 </p>
-                <p className="mt-2 text-xl font-semibold text-ink">Readable</p>
+                <p className="mt-2 text-xl font-semibold text-ink">
+                  {settings.stat_3_number?.value || "98%"}
+                </p>
               </div>
             </div>
           </div>
@@ -145,7 +184,10 @@ export default function Home() {
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
                 <div className="group relative overflow-hidden rounded-2xl">
                   <img
-                    src="https://cicowp-ca.com/public/images/1710775539_ec11ec459e3d79b74fd5.jpeg"
+                    src={
+                      settings.hero_image?.value ||
+                      "https://cicowp-ca.com/public/images/1710775539_ec11ec459e3d79b74fd5.jpeg"
+                    }
                     alt="Canadian landscape"
                     className="h-44 w-full object-cover transition duration-500 group-hover:scale-105"
                     loading="lazy"
@@ -157,7 +199,10 @@ export default function Home() {
                 </div>
                 <div className="group relative overflow-hidden rounded-2xl">
                   <img
-                    src="https://cicowp-ca.com/public/images/1710759446_d008e85601aa6463b042.jpeg"
+                    src={
+                      settings.hero_image_secondary?.value ||
+                      "https://cicowp-ca.com/public/images/1710759446_d008e85601aa6463b042.jpeg"
+                    }
                     alt="Public services"
                     className="h-44 w-full object-cover transition duration-500 group-hover:scale-105"
                     loading="lazy"
@@ -174,30 +219,58 @@ export default function Home() {
                   Quick links
                 </p>
                 <div className="mt-3 flex flex-wrap gap-2 text-sm">
-                  <a
-                    href="https://www.canada.ca/en/news.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-full bg-white/10 px-3 py-1.5 transition hover:bg-white/20"
-                  >
-                    News
-                  </a>
-                  <a
-                    href="https://open.canada.ca/en"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-full bg-white/10 px-3 py-1.5 transition hover:bg-white/20"
-                  >
-                    Open Government
-                  </a>
-                  <a
-                    href="https://www.pm.gc.ca/en"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-full bg-white/10 px-3 py-1.5 transition hover:bg-white/20"
-                  >
-                    Prime Minister
-                  </a>
+                  {settings.quicklinks_data?.value ? (
+                    (() => {
+                      try {
+                        const links =
+                          typeof settings.quicklinks_data.value === "string"
+                            ? JSON.parse(settings.quicklinks_data.value)
+                            : settings.quicklinks_data.value;
+                        return (
+                          links as Array<{ text: string; href: string }>
+                        ).map((link, idx) => (
+                          <a
+                            key={idx}
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded-full bg-white/10 px-3 py-1.5 transition hover:bg-white/20"
+                          >
+                            {link.text}
+                          </a>
+                        ));
+                      } catch {
+                        return null;
+                      }
+                    })()
+                  ) : (
+                    <>
+                      <a
+                        href="https://www.canada.ca/en/news.html"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-full bg-white/10 px-3 py-1.5 transition hover:bg-white/20"
+                      >
+                        News
+                      </a>
+                      <a
+                        href="https://open.canada.ca/en"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-full bg-white/10 px-3 py-1.5 transition hover:bg-white/20"
+                      >
+                        Open Government
+                      </a>
+                      <a
+                        href="https://www.pm.gc.ca/en"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-full bg-white/10 px-3 py-1.5 transition hover:bg-white/20"
+                      >
+                        Prime Minister
+                      </a>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

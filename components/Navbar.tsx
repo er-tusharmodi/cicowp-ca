@@ -15,10 +15,13 @@ interface DynamicPage {
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dynamicPages, setDynamicPages] = useState<DynamicPage[]>([]);
+  const [siteLogo, setSiteLogo] = useState<string>("");
+  const [siteName, setSiteName] = useState<string>("Cicowp-ca");
   const pathname = usePathname();
 
   useEffect(() => {
     fetchNavigationPages();
+    fetchBranding();
   }, []);
 
   const fetchNavigationPages = async () => {
@@ -30,6 +33,24 @@ export default function Navbar() {
       }
     } catch (error) {
       console.error("Failed to fetch navigation pages:", error);
+    }
+  };
+
+  const fetchBranding = async () => {
+    try {
+      const response = await fetch("/api/settings?category=general");
+      if (!response.ok) return;
+      const result = await response.json();
+      const logoSetting = result.find((s: any) => s.key === "site_logo");
+      const nameSetting = result.find((s: any) => s.key === "site_name");
+      if (logoSetting?.value) {
+        setSiteLogo(logoSetting.value);
+      }
+      if (nameSetting?.value) {
+        setSiteName(nameSetting.value);
+      }
+    } catch (error) {
+      console.error("Failed to fetch branding settings:", error);
     }
   };
 
@@ -53,12 +74,21 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 border-b border-ink/10 bg-mist/85 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="group inline-flex items-center gap-3">
-          <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-sm font-bold text-mist transition group-hover:bg-pine">
-            CA
-          </span>
-          <span className="font-display text-xl font-semibold tracking-tight text-ink">
-            Cicowp-ca
-          </span>
+          {siteLogo ? (
+            <img
+              src={siteLogo}
+              alt={siteName}
+              className="h-[50px] w-full rounded-xl object-cover border border-ink/10 bg-white"
+              onError={(e) => {
+                (e.target as HTMLImageElement).style.display = "none";
+              }}
+            />
+          ) : (
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-sm font-bold text-mist transition group-hover:bg-pine">
+              CA
+            </span>
+          )}
+          <span className="sr-only">{siteName}</span>
         </Link>
 
         <button
