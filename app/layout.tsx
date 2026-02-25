@@ -5,6 +5,7 @@ import { AuthProvider } from "@/components/AuthProvider";
 import Setting from "@/models/Setting";
 import dbConnect from "@/lib/mongodb";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
@@ -74,6 +75,7 @@ export default function RootLayout({
         <div className="texture pointer-events-none fixed inset-0 z-[-2]"></div>
         <AuthProvider>{children}</AuthProvider>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
