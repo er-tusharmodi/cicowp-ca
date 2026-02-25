@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | Cicowp-ca</title>
+    <meta name="description" content="Contact Cicowp-ca for inquiries and support requests." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;family=Sora:wght@500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              body: ["Public Sans", "sans-serif"],
+              display: ["Sora", "sans-serif"],
+            },
+            colors: {
+              mist: "#f4f3ec",
+              ink: "#12211a",
+              pine: "#1f6f5f",
+              clay: "#e48949",
+              sky: "#2f7fb5",
+            },
+            boxShadow: {
+              soft: "0 20px 50px -24px rgba(18, 33, 26, 0.28)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        font-family: "Public Sans", sans-serif;
+        color: #12211a;
+        background: #f4f3ec;
+      }
+
+      .page-glow::before,
+      .page-glow::after {
+        content: "";
+        position: fixed;
+        z-index: -1;
+        width: 36rem;
+        height: 36rem;
+        border-radius: 9999px;
+        filter: blur(50px);
+        pointer-events: none;
+      }
+
+      .page-glow::before {
+        top: -12rem;
+        right: -9rem;
+        background: radial-gradient(circle, rgba(31, 111, 95, 0.2) 0%, rgba(31, 111, 95, 0) 72%);
+      }
+
+      .page-glow::after {
+        bottom: -14rem;
+        left: -10rem;
+        background: radial-gradient(circle, rgba(228, 137, 73, 0.25) 0%, rgba(228, 137, 73, 0) 72%);
+      }
+
+      .texture {
+        background-image: linear-gradient(rgba(18, 33, 26, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(18, 33, 26, 0.035) 1px, transparent 1px);
+        background-size: 38px 38px;
+        mask-image: radial-gradient(circle at center, black 43%, transparent 90%);
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 0.45s ease, transform 0.45s ease;
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body class="page-glow antialiased" data-page="contact">
+    <div class="texture pointer-events-none fixed inset-0 z-[-2]"></div>
+
+    <header class="sticky top-0 z-50 border-b border-ink/10 bg-mist/85 backdrop-blur">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+        <a href="/" class="group inline-flex items-center gap-3" data-nav="home">
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-sm font-bold text-mist transition group-hover:bg-pine">CA</span>
+          <span class="js-site-name font-display text-xl font-semibold tracking-tight text-ink">Cicowp-ca</span>
+        </a>
+
+        <button
+          id="menuButton"
+          class="inline-flex items-center justify-center rounded-lg border border-ink/20 p-2 text-ink md:hidden"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+        >
+          <span class="sr-only">Open menu</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+
+        <nav class="hidden items-center gap-1 text-sm font-medium md:flex" aria-label="Main navigation">
+          <a class="rounded-full px-4 py-2 text-ink/80 hover:bg-white hover:text-ink" data-nav="home" href="/">Home</a>
+          <a class="rounded-full px-4 py-2 text-ink/80 hover:bg-white hover:text-ink" data-nav="check" href="/check-status.html">Check Status</a>
+          <a class="rounded-full px-4 py-2 text-ink/80 hover:bg-white hover:text-ink" data-nav="owp" href="/page.html">OWP</a>
+          <a class="rounded-full bg-ink px-4 py-2 text-mist" data-nav="contact" href="/contact.html">Contact</a>
+        </nav>
+      </div>
+
+      <nav id="mobileMenu" class="hidden border-t border-ink/10 px-4 pb-4 md:hidden" aria-label="Mobile navigation">
+        <div class="mx-auto flex max-w-7xl flex-col gap-2 pt-4 text-sm font-medium">
+          <a class="rounded-lg px-4 py-2 hover:bg-white" data-nav="home" href="/">Home</a>
+          <a class="rounded-lg px-4 py-2 hover:bg-white" data-nav="check" href="/check-status.html">Check Status</a>
+          <a class="rounded-lg px-4 py-2 hover:bg-white" data-nav="owp" href="/page.html">OWP</a>
+          <a class="rounded-lg bg-white px-4 py-2" data-nav="contact" href="/contact.html">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="mx-auto max-w-7xl px-4 pb-10 pt-12 sm:px-6 lg:px-8">
+        <div class="reveal rounded-3xl border border-ink/10 bg-white/95 p-6 shadow-soft sm:p-8">
+          <p id="contactBadge" class="inline-flex rounded-full border border-clay/40 bg-clay/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-clay">Contact</p>
+          <h1 id="contactTitle" class="mt-4 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">Send us your inquiry</h1>
+          <p id="contactDescription" class="mt-4 max-w-3xl text-base leading-relaxed text-ink/75 sm:text-lg">
+            Share your request clearly and we can follow up faster. This refreshed page keeps your original fields and adds a cleaner submission flow.
+          </p>
+        </div>
+      </section>
+
+      <section class="mx-auto grid max-w-7xl gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-12 lg:px-8">
+        <div class="reveal lg:col-span-8">
+          <div class="rounded-3xl border border-ink/10 bg-white p-6 shadow-soft sm:p-8">
+            <h2 class="font-display text-2xl font-semibold tracking-tight text-ink">Contact form</h2>
+
+            <form id="contactForm" action="#" method="post" class="mt-6 grid gap-4 sm:grid-cols-2">
+              <div class="sm:col-span-1">
+                <label for="name" class="mb-2 block text-sm font-semibold text-ink">Full Name</label>
+                <input
+                  id="name"
+                  name="name"
+                  type="text"
+                  required
+                  placeholder="Your full name"
+                  class="w-full rounded-xl border border-ink/15 bg-mist px-4 py-3 text-sm text-ink placeholder:text-ink/45 focus:border-pine focus:outline-none"
+                />
+              </div>
+
+              <div class="sm:col-span-1">
+                <label for="mobile" class="mb-2 block text-sm font-semibold text-ink">Mobile</label>
+                <input
+                  id="mobile"
+                  name="mobile"
+                  type="tel"
+                  required
+                  placeholder="Your mobile number"
+                  class="w-full rounded-xl border border-ink/15 bg-mist px-4 py-3 text-sm text-ink placeholder:text-ink/45 focus:border-pine focus:outline-none"
+                />
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="email" class="mb-2 block text-sm font-semibold text-ink">Email (optional)</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  class="w-full rounded-xl border border-ink/15 bg-mist px-4 py-3 text-sm text-ink placeholder:text-ink/45 focus:border-pine focus:outline-none"
+                />
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="subject" class="mb-2 block text-sm font-semibold text-ink">Subject</label>
+                <input
+                  id="subject"
+                  name="subject"
+                  type="text"
+                  required
+                  placeholder="Your subject"
+                  class="w-full rounded-xl border border-ink/15 bg-mist px-4 py-3 text-sm text-ink placeholder:text-ink/45 focus:border-pine focus:outline-none"
+                />
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="message" class="mb-2 block text-sm font-semibold text-ink">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="6"
+                  required
+                  placeholder="Write your message"
+                  class="w-full rounded-xl border border-ink/15 bg-mist px-4 py-3 text-sm text-ink placeholder:text-ink/45 focus:border-pine focus:outline-none"
+                ></textarea>
+              </div>
+
+              <div class="sm:col-span-2">
+                <button type="submit" class="inline-flex w-full items-center justify-center rounded-xl bg-ink px-5 py-3 text-sm font-semibold text-mist transition hover:bg-pine">
+                  Submit
+                </button>
+              </div>
+            </form>
+
+            <p id="submitMessage" class="mt-4 hidden rounded-xl border border-pine/30 bg-pine/5 px-4 py-3 text-sm text-ink"></p>
+          </div>
+        </div>
+
+        <aside class="reveal space-y-6 lg:col-span-4">
+          <div class="rounded-3xl border border-ink/10 bg-white p-6 shadow-soft">
+            <h3 class="font-display text-xl font-semibold text-ink">Response guide</h3>
+            <ul class="mt-4 space-y-3 text-sm leading-relaxed text-ink/75">
+              <li id="contactGuide1" class="rounded-xl bg-mist p-3">Use one request per message for faster handling.</li>
+              <li id="contactGuide2" class="rounded-xl bg-mist p-3">Include your reference/document details when relevant.</li>
+              <li id="contactGuide3" class="rounded-xl bg-mist p-3">Keep your mobile and subject accurate for follow-up.</li>
+            </ul>
+          </div>
+
+          <div class="rounded-3xl border border-ink/10 bg-ink p-6 text-mist shadow-soft">
+            <h3 class="font-display text-xl font-semibold">Need quick actions?</h3>
+            <div class="mt-4 grid gap-2 text-sm text-mist/85">
+              <a class="rounded-xl bg-white/10 px-3 py-2 transition hover:bg-white/20" href="/check-status.html">Go to Check Status</a>
+              <a class="rounded-xl bg-white/10 px-3 py-2 transition hover:bg-white/20" href="/page.html">Read OWP information</a>
+              <a class="rounded-xl bg-white/10 px-3 py-2 transition hover:bg-white/20" href="https://www.canada.ca/en/news.html">Canada News</a>
+            </div>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="border-t border-ink/10 bg-ink text-mist">
+      <div class="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-8">
+        <section>
+          <h3 class="font-display text-lg font-semibold">About</h3>
+          <p id="footerAbout" class="js-footer-about mt-3 text-sm leading-relaxed text-mist/80">Cicowp-ca | Write Whatever Your Heart Wants. A structured hub for public service links.</p>
+        </section>
+
+        <section>
+          <h3 class="font-display text-lg font-semibold">Pages</h3>
+          <div class="mt-3 grid gap-2 text-sm text-mist/80">
+            <a class="transition hover:text-white" data-nav="home" href="/">Home</a>
+            <a class="transition hover:text-white" data-nav="check" href="/check-status.html">Check Status</a>
+            <a class="transition hover:text-white" data-nav="owp" href="/page.html">OWP</a>
+            <a class="transition hover:text-white" data-nav="contact" href="/contact.html">Contact</a>
+          </div>
+        </section>
+
+        <section>
+          <h3 class="font-display text-lg font-semibold">Useful Links</h3>
+          <div class="js-footer-links mt-3 grid gap-2 text-sm text-mist/80">
+            <a class="transition hover:text-white" href="https://www.canada.ca/en/government/dept.html">Departments and agencies</a>
+            <a class="transition hover:text-white" href="https://www.canada.ca/en/news.html">News</a>
+            <a class="transition hover:text-white" href="https://open.canada.ca/en">Open Government</a>
+            <a class="transition hover:text-white" href="https://www.pm.gc.ca/en">Prime Minister</a>
+          </div>
+        </section>
+      </div>
+
+      <div class="border-t border-white/10 py-5">
+        <p class="mx-auto max-w-7xl px-4 text-xs text-mist/70 sm:px-6 lg:px-8"><span id="year"></span> <span id="footerCopyrightText">Cicowp-ca. All rights reserved.</span></p>
+      </div>
+    </footer>
+
+    <script src="/admin/assets/public-site.js"></script>
+    <script>
+      const menuButton = document.getElementById("menuButton");
+      const mobileMenu = document.getElementById("mobileMenu");
+
+      menuButton.addEventListener("click", () => {
+        const expanded = menuButton.getAttribute("aria-expanded") === "true";
+        menuButton.setAttribute("aria-expanded", String(!expanded));
+        mobileMenu.classList.toggle("hidden", expanded);
+      });
+
+      const revealItems = document.querySelectorAll(".reveal");
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+
+      revealItems.forEach((item) => revealObserver.observe(item));
+
+      const contactForm = document.getElementById("contactForm");
+      const submitMessage = document.getElementById("submitMessage");
+
+      contactForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(contactForm);
+        const name = formData.get("name");
+
+        try {
+          const response = await fetch("/admin/api/contact-submit.php", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await response.json();
+          if (!response.ok || !data.ok) {
+            throw new Error(data.message || "Unable to submit your message.");
+          }
+          submitMessage.textContent = `Thanks, ${name}. ${data.message || "Your message has been captured for follow-up."}`;
+        } catch (_error) {
+          submitMessage.textContent = `Thanks, ${name}. Your message is ready but the admin API is currently unreachable.`;
+        }
+
+        submitMessage.classList.remove("hidden");
+        contactForm.reset();
+      });
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check Status | Cicowp-ca</title>
+    <meta
+      name="description"
+      content="Check your document status quickly using document number and passport number."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;family=Sora:wght@500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              body: ["Public Sans", "sans-serif"],
+              display: ["Sora", "sans-serif"],
+            },
+            colors: {
+              mist: "#f4f3ec",
+              ink: "#12211a",
+              pine: "#1f6f5f",
+              clay: "#e48949",
+              sky: "#2f7fb5",
+            },
+            boxShadow: {
+              soft: "0 20px 50px -24px rgba(18, 33, 26, 0.28)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --bg-base: #f4f3ec;
+        --ink: #12211a;
+      }
+
+      body {
+        font-family: "Public Sans", sans-serif;
+        color: var(--ink);
+        background: var(--bg-base);
+      }
+
+      .page-glow::before,
+      .page-glow::after {
+        content: "";
+        position: fixed;
+        z-index: -1;
+        width: 38rem;
+        height: 38rem;
+        border-radius: 9999px;
+        filter: blur(50px);
+        pointer-events: none;
+      }
+
+      .page-glow::before {
+        top: -12rem;
+        right: -8rem;
+        background: radial-gradient(circle, rgba(228, 137, 73, 0.24) 0%, rgba(228, 137, 73, 0) 72%);
+      }
+
+      .page-glow::after {
+        bottom: -16rem;
+        left: -10rem;
+        background: radial-gradient(circle, rgba(47, 127, 181, 0.2) 0%, rgba(47, 127, 181, 0) 72%);
+      }
+
+      .texture {
+        background-image: linear-gradient(rgba(18, 33, 26, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(18, 33, 26, 0.04) 1px, transparent 1px);
+        background-size: 36px 36px;
+        mask-image: radial-gradient(circle at center, black 42%, transparent 90%);
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 0.45s ease, transform 0.45s ease;
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body class="page-glow antialiased" data-page="check-status">
+    <div class="texture pointer-events-none fixed inset-0 z-[-2]"></div>
+
+    <header class="sticky top-0 z-50 border-b border-ink/10 bg-mist/85 backdrop-blur">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+        <a href="/" class="group inline-flex items-center gap-3" data-nav="home">
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-sm font-bold text-mist transition group-hover:bg-pine">CA</span>
+          <span class="js-site-name font-display text-xl font-semibold tracking-tight text-ink">Cicowp-ca</span>
+        </a>
+
+        <button
+          id="menuButton"
+          class="inline-flex items-center justify-center rounded-lg border border-ink/20 p-2 text-ink md:hidden"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+        >
+          <span class="sr-only">Open menu</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+
+        <nav class="hidden items-center gap-1 text-sm font-medium md:flex" aria-label="Main navigation">
+          <a class="rounded-full px-4 py-2 text-ink/80 hover:bg-white hover:text-ink" data-nav="home" href="/">Home</a>
+          <a class="rounded-full bg-ink px-4 py-2 text-mist" data-nav="check" href="/check-status.html">Check Status</a>
+          <a class="rounded-full px-4 py-2 text-ink/80 hover:bg-white hover:text-ink" data-nav="owp" href="/page.html">OWP</a>
+          <a class="rounded-full px-4 py-2 text-ink/80 hover:bg-white hover:text-ink" data-nav="contact" href="/contact.html">Contact</a>
+        </nav>
+      </div>
+
+      <nav id="mobileMenu" class="hidden border-t border-ink/10 px-4 pb-4 md:hidden" aria-label="Mobile navigation">
+        <div class="mx-auto flex max-w-7xl flex-col gap-2 pt-4 text-sm font-medium">
+          <a class="rounded-lg px-4 py-2 hover:bg-white" data-nav="home" href="/">Home</a>
+          <a class="rounded-lg bg-white px-4 py-2" data-nav="check" href="/check-status.html">Check Status</a>
+          <a class="rounded-lg px-4 py-2 hover:bg-white" data-nav="owp" href="/page.html">OWP</a>
+          <a class="rounded-lg px-4 py-2 hover:bg-white" data-nav="contact" href="/contact.html">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="mx-auto max-w-7xl px-4 pb-10 pt-12 sm:px-6 lg:px-8">
+        <div class="reveal rounded-3xl border border-ink/10 bg-white/95 p-6 shadow-soft sm:p-8">
+          <p id="checkBadge" class="inline-flex rounded-full border border-pine/30 bg-pine/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.14em] text-pine">Status Lookup</p>
+          <h1 id="checkTitle" class="mt-4 font-display text-4xl font-semibold tracking-tight text-ink sm:text-5xl">Check your document status</h1>
+          <p id="checkDescription" class="mt-4 max-w-3xl text-base leading-relaxed text-ink/75 sm:text-lg">
+            Enter your document and passport numbers to search. The form keeps the original query names (`text`, `text2`) for compatibility.
+          </p>
+        </div>
+      </section>
+
+      <section class="mx-auto grid max-w-7xl gap-6 px-4 pb-16 sm:px-6 lg:grid-cols-12 lg:px-8">
+        <div class="reveal lg:col-span-7">
+          <div class="rounded-3xl border border-ink/10 bg-white p-6 shadow-soft sm:p-8">
+            <h2 class="font-display text-2xl font-semibold tracking-tight text-ink">Search form</h2>
+            <form id="statusForm" action="/admin/api/check-status-submit.php" method="post" class="mt-6 grid gap-4 sm:grid-cols-2">
+              <div class="sm:col-span-2">
+                <label for="text" class="mb-2 block text-sm font-semibold text-ink">Document Number</label>
+                <input
+                  id="text"
+                  name="text"
+                  type="text"
+                  required
+                  autocomplete="off"
+                  placeholder="Enter document number"
+                  class="w-full rounded-xl border border-ink/15 bg-mist px-4 py-3 text-sm text-ink placeholder:text-ink/45 focus:border-pine focus:outline-none"
+                />
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="text2" class="mb-2 block text-sm font-semibold text-ink">Passport Number</label>
+                <input
+                  id="text2"
+                  name="text2"
+                  type="text"
+                  required
+                  autocomplete="off"
+                  placeholder="Enter passport number"
+                  class="w-full rounded-xl border border-ink/15 bg-mist px-4 py-3 text-sm text-ink placeholder:text-ink/45 focus:border-pine focus:outline-none"
+                />
+              </div>
+
+              <div class="sm:col-span-2">
+                <button
+                  type="submit"
+                  class="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-5 py-3 text-sm font-semibold text-mist transition hover:bg-pine"
+                >
+                  Search
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
+                    <path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.69l-2.72-2.72a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 1 1-1.06-1.06l2.72-2.72H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd" />
+                  </svg>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <aside class="reveal space-y-6 lg:col-span-5">
+          <div class="rounded-3xl border border-ink/10 bg-white p-6 shadow-soft">
+            <h3 class="font-display text-xl font-semibold text-ink">Before you search</h3>
+            <ul class="mt-4 space-y-3 text-sm leading-relaxed text-ink/75">
+              <li class="rounded-xl bg-mist p-3">Use the exact document number from your letter or file.</li>
+              <li class="rounded-xl bg-mist p-3">Use a valid passport number with no extra spaces.</li>
+              <li class="rounded-xl bg-mist p-3">If no record appears, verify your entries and try again.</li>
+            </ul>
+          </div>
+
+          <div id="resultPanel" class="hidden rounded-3xl border border-pine/30 bg-pine/5 p-6">
+            <h3 class="font-display text-xl font-semibold text-ink">Search request received</h3>
+            <p class="mt-2 text-sm text-ink/80">Submitted identifiers:</p>
+            <div class="mt-3 space-y-2 text-sm">
+              <div class="rounded-xl bg-white p-3">
+                <p class="font-semibold text-ink/70">Document Number</p>
+                <p id="docValue" class="text-ink"></p>
+              </div>
+              <div class="rounded-xl bg-white p-3">
+                <p class="font-semibold text-ink/70">Passport Number</p>
+                <p id="passValue" class="text-ink"></p>
+              </div>
+            </div>
+            <p id="statusSubmitMessage" class="mt-3 text-sm font-medium text-ink/80"></p>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="border-t border-ink/10 bg-ink text-mist">
+      <div class="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-8">
+        <section>
+          <h3 class="font-display text-lg font-semibold">About</h3>
+          <p id="footerAbout" class="js-footer-about mt-3 text-sm leading-relaxed text-mist/80">Cicowp-ca | Write Whatever Your Heart Wants. A structured hub for public service links.</p>
+        </section>
+
+        <section>
+          <h3 class="font-display text-lg font-semibold">Pages</h3>
+          <div class="mt-3 grid gap-2 text-sm text-mist/80">
+            <a class="transition hover:text-white" data-nav="home" href="/">Home</a>
+            <a class="transition hover:text-white" data-nav="check" href="/check-status.html">Check Status</a>
+            <a class="transition hover:text-white" data-nav="owp" href="/page.html">OWP</a>
+            <a class="transition hover:text-white" data-nav="contact" href="/contact.html">Contact</a>
+          </div>
+        </section>
+
+        <section>
+          <h3 class="font-display text-lg font-semibold">Useful Links</h3>
+          <div class="js-footer-links mt-3 grid gap-2 text-sm text-mist/80">
+            <a class="transition hover:text-white" href="https://www.canada.ca/en/government/dept.html">Departments and agencies</a>
+            <a class="transition hover:text-white" href="https://www.canada.ca/en/news.html">News</a>
+            <a class="transition hover:text-white" href="https://open.canada.ca/en">Open Government</a>
+            <a class="transition hover:text-white" href="https://www.pm.gc.ca/en">Prime Minister</a>
+          </div>
+        </section>
+      </div>
+
+      <div class="border-t border-white/10 py-5">
+        <p class="mx-auto max-w-7xl px-4 text-xs text-mist/70 sm:px-6 lg:px-8"><span id="year"></span> <span id="footerCopyrightText">Cicowp-ca. All rights reserved.</span></p>
+      </div>
+    </footer>
+
+    <script src="/admin/assets/public-site.js"></script>
+    <script>
+      const menuButton = document.getElementById("menuButton");
+      const mobileMenu = document.getElementById("mobileMenu");
+
+      menuButton.addEventListener("click", () => {
+        const expanded = menuButton.getAttribute("aria-expanded") === "true";
+        menuButton.setAttribute("aria-expanded", String(!expanded));
+        mobileMenu.classList.toggle("hidden", expanded);
+      });
+
+      const revealItems = document.querySelectorAll(".reveal");
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+
+      revealItems.forEach((item) => revealObserver.observe(item));
+
+      const statusForm = document.getElementById("statusForm");
+      const statusSubmitMessage = document.getElementById("statusSubmitMessage");
+      const resultPanel = document.getElementById("resultPanel");
+      const docValue = document.getElementById("docValue");
+      const passValue = document.getElementById("passValue");
+
+      function revealResult(doc, pass, message = "") {
+        resultPanel.classList.remove("hidden");
+        docValue.textContent = doc || "Not provided";
+        passValue.textContent = pass || "Not provided";
+        statusSubmitMessage.textContent = message;
+      }
+
+      statusForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(statusForm);
+        const doc = String(formData.get("text") || "");
+        const pass = String(formData.get("text2") || "");
+
+        try {
+          const response = await fetch("/admin/api/check-status-submit.php", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await response.json();
+          if (!response.ok || !data.ok) {
+            throw new Error(data.message || "Unable to submit search request.");
+          }
+          revealResult(doc, pass, data.message || "Search request captured.");
+        } catch (_error) {
+          revealResult(doc, pass, "Submission could not reach the admin API right now.");
+        }
+      });
+
+      const params = new URLSearchParams(window.location.search);
+      const doc = params.get("text");
+      const pass = params.get("text2");
+      if (doc || pass) {
+        const panel = document.getElementById("resultPanel");
+        panel.classList.remove("hidden");
+        document.getElementById("docValue").textContent = doc || "Not provided";
+        document.getElementById("passValue").textContent = pass || "Not provided";
+      }
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>

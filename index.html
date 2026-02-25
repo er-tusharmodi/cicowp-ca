@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cicowp-ca | Write Whatever Your Heart Wants</title>
+    <meta
+      name="description"
+      content="Cicowp-ca public information hub with quick access to status checks, OWP, and core Canada service topics."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;family=Sora:wght@500;600;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              body: ["Public Sans", "sans-serif"],
+              display: ["Sora", "sans-serif"],
+            },
+            colors: {
+              mist: "#f4f3ec",
+              ink: "#12211a",
+              pine: "#1f6f5f",
+              clay: "#e48949",
+              sky: "#2f7fb5",
+            },
+            boxShadow: {
+              soft: "0 20px 50px -24px rgba(18, 33, 26, 0.28)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --bg-base: #f4f3ec;
+        --ink: #12211a;
+        --pine: #1f6f5f;
+        --clay: #e48949;
+        --sky: #2f7fb5;
+      }
+
+      body {
+        font-family: "Public Sans", sans-serif;
+        color: var(--ink);
+        background: var(--bg-base);
+      }
+
+      .page-glow::before,
+      .page-glow::after {
+        content: "";
+        position: fixed;
+        z-index: -1;
+        width: 42rem;
+        height: 42rem;
+        border-radius: 9999px;
+        filter: blur(48px);
+        pointer-events: none;
+      }
+
+      .page-glow::before {
+        top: -14rem;
+        right: -10rem;
+        background: radial-gradient(circle, rgba(228, 137, 73, 0.28) 0%, rgba(228, 137, 73, 0) 72%);
+      }
+
+      .page-glow::after {
+        bottom: -16rem;
+        left: -8rem;
+        background: radial-gradient(circle, rgba(47, 127, 181, 0.24) 0%, rgba(47, 127, 181, 0) 72%);
+      }
+
+      .texture {
+        background-image: linear-gradient(rgba(18, 33, 26, 0.04) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(18, 33, 26, 0.04) 1px, transparent 1px);
+        background-size: 36px 36px;
+        mask-image: radial-gradient(circle at center, black 40%, transparent 88%);
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+
+      .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .card-shine {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card-shine::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+        transform: translateX(-130%);
+        transition: transform 0.75s ease;
+      }
+
+      .card-shine:hover::before {
+        transform: translateX(130%);
+      }
+    </style>
+  </head>
+  <body class="page-glow antialiased" data-page="home">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:text-mist">Skip to main content</a>
+
+    <div class="texture pointer-events-none fixed inset-0 z-[-2]"></div>
+
+    <header class="sticky top-0 z-50 border-b border-ink/10 bg-mist/85 backdrop-blur">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+        <a href="/" class="group inline-flex items-center gap-3" data-nav="home">
+          <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-ink text-sm font-bold text-mist transition group-hover:bg-pine">CA</span>
+          <span class="js-site-name font-display text-xl font-semibold tracking-tight text-ink">Cicowp-ca</span>
+        </a>
+
+        <button
+          id="menuButton"
+          class="inline-flex items-center justify-center rounded-lg border border-ink/20 p-2 text-ink md:hidden"
+          aria-expanded="false"
+          aria-controls="mobileMenu"
+        >
+          <span class="sr-only">Open menu</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="h-6 w-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+
+        <nav class="hidden items-center gap-1 text-sm font-medium md:flex" aria-label="Main navigation">
+          <a class="rounded-full px-4 py-2 text-ink/80 hover:bg-white hover:text-ink" data-nav="home" href="/">Home</a>
+          <a class="rounded-full px-4 py-2 text-ink/80 hover:bg-white hover:text-ink" data-nav="check" href="/check-status.html">Check Status</a>
+          <a class="rounded-full px-4 py-2 text-ink/80 hover:bg-white hover:text-ink" data-nav="owp" href="/page.html">OWP</a>
+          <a class="rounded-full bg-ink px-5 py-2.5 text-mist transition hover:bg-pine" data-nav="contact" href="/contact.html">Contact</a>
+        </nav>
+      </div>
+
+      <nav id="mobileMenu" class="hidden border-t border-ink/10 px-4 pb-4 md:hidden" aria-label="Mobile navigation">
+        <div class="mx-auto flex max-w-7xl flex-col gap-2 pt-4 text-sm font-medium">
+          <a class="rounded-lg px-4 py-2 hover:bg-white" data-nav="home" href="/">Home</a>
+          <a class="rounded-lg px-4 py-2 hover:bg-white" data-nav="check" href="/check-status.html">Check Status</a>
+          <a class="rounded-lg px-4 py-2 hover:bg-white" data-nav="owp" href="/page.html">OWP</a>
+          <a class="rounded-lg px-4 py-2 hover:bg-white" data-nav="contact" href="/contact.html">Contact</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="mx-auto grid max-w-7xl items-center gap-8 px-4 pb-14 pt-12 sm:px-6 lg:grid-cols-12 lg:gap-10 lg:px-8 lg:pb-20 lg:pt-16">
+        <div class="reveal space-y-8 lg:col-span-7">
+          <p id="homeBadge" class="inline-flex items-center gap-2 rounded-full border border-pine/30 bg-white/90 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-pine">
+            Better access to public services
+          </p>
+
+          <div class="space-y-5">
+            <h1 id="homeTitle" class="font-display text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl lg:text-6xl">
+              A cleaner, faster front door for Canadian public information.
+            </h1>
+            <p id="homeDescription" class="max-w-2xl text-lg leading-relaxed text-ink/75">
+              Navigate priority government topics, check your status quickly, and reach OWP resources without visual clutter or outdated layouts.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <a
+              id="homePrimaryCta"
+              href="/check-status.html"
+              class="card-shine inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-3 text-sm font-semibold text-mist shadow-soft transition hover:bg-pine"
+            >
+              <span id="homePrimaryCtaText">Check Status</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4">
+                <path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.69l-2.72-2.72a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 1 1-1.06-1.06l2.72-2.72H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd" />
+              </svg>
+            </a>
+            <a
+              id="homeSecondaryCta"
+              href="/page.html"
+              class="inline-flex items-center gap-2 rounded-xl border border-ink/20 bg-white px-6 py-3 text-sm font-semibold text-ink transition hover:border-pine/40 hover:text-pine"
+            >
+              <span id="homeSecondaryCtaText">Open OWP</span>
+            </a>
+          </div>
+
+          <div class="grid gap-3 sm:grid-cols-3">
+            <div class="rounded-xl border border-ink/10 bg-white p-4 shadow-soft">
+              <p id="homeStat1Label" class="text-xs uppercase tracking-[0.12em] text-ink/55">Core Navigation</p>
+              <p id="homeStat1Value" class="mt-2 text-xl font-semibold text-ink">Simple</p>
+            </div>
+            <div class="rounded-xl border border-ink/10 bg-white p-4 shadow-soft">
+              <p id="homeStat2Label" class="text-xs uppercase tracking-[0.12em] text-ink/55">Topic Access</p>
+              <p id="homeStat2Value" class="mt-2 text-xl font-semibold text-ink">16 Areas</p>
+            </div>
+            <div class="rounded-xl border border-ink/10 bg-white p-4 shadow-soft">
+              <p id="homeStat3Label" class="text-xs uppercase tracking-[0.12em] text-ink/55">Design Goal</p>
+              <p id="homeStat3Value" class="mt-2 text-xl font-semibold text-ink">Readable</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal lg:col-span-5">
+          <div class="relative rounded-3xl border border-ink/10 bg-white/95 p-3 shadow-soft">
+            <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-1">
+              <div class="group relative overflow-hidden rounded-2xl">
+                <img
+                  id="homeImage1"
+                  src="https://cicowp-ca.com/public/images/1710775539_ec11ec459e3d79b74fd5.jpeg"
+                  alt="Canadian landscape"
+                  class="h-44 w-full object-cover transition duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-ink/55 via-ink/10 to-transparent"></div>
+                <p id="homeImage1Caption" class="absolute bottom-3 left-3 text-xs font-semibold uppercase tracking-[0.14em] text-mist">Community updates</p>
+              </div>
+              <div class="group relative overflow-hidden rounded-2xl">
+                <img
+                  id="homeImage2"
+                  src="https://cicowp-ca.com/public/images/1710759446_d008e85601aa6463b042.jpeg"
+                  alt="Public services"
+                  class="h-44 w-full object-cover transition duration-500 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-ink/55 via-ink/10 to-transparent"></div>
+                <p id="homeImage2Caption" class="absolute bottom-3 left-3 text-xs font-semibold uppercase tracking-[0.14em] text-mist">Service access</p>
+              </div>
+            </div>
+
+            <div class="mt-3 rounded-2xl bg-ink p-5 text-mist">
+              <p class="text-xs uppercase tracking-[0.12em] text-mist/70">Quick links</p>
+              <div id="homeQuickLinks" class="mt-3 flex flex-wrap gap-2 text-sm">
+                <a href="https://www.canada.ca/en/news.html" class="rounded-full bg-white/10 px-3 py-1.5 transition hover:bg-white/20">News</a>
+                <a href="https://open.canada.ca/en" class="rounded-full bg-white/10 px-3 py-1.5 transition hover:bg-white/20">Open Government</a>
+                <a href="https://www.pm.gc.ca/en" class="rounded-full bg-white/10 px-3 py-1.5 transition hover:bg-white/20">Prime Minister</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 lg:pb-16">
+        <div class="reveal rounded-3xl border border-ink/10 bg-white p-6 shadow-soft sm:p-8">
+          <div class="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p class="text-xs font-semibold uppercase tracking-[0.16em] text-clay">Featured Topics</p>
+              <h2 id="homeTopicsHeading" class="mt-2 font-display text-3xl font-semibold tracking-tight text-ink">Find what you need faster</h2>
+            </div>
+            <label for="topicSearch" class="w-full max-w-sm">
+              <span class="sr-only">Search topic</span>
+              <input
+                id="topicSearch"
+                type="search"
+                placeholder="Search topics (health, taxes, travel...)"
+                class="w-full rounded-xl border border-ink/15 bg-mist px-4 py-3 text-sm text-ink placeholder:text-ink/45 focus:border-pine focus:outline-none"
+              />
+            </label>
+          </div>
+
+          <div id="topicsGrid" class="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3"></div>
+          <p id="topicEmpty" class="mt-4 hidden text-sm text-ink/65">No matching topics. Try another keyword.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-ink/10 bg-ink text-mist">
+      <div class="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-8">
+        <section>
+          <h3 class="font-display text-lg font-semibold">About</h3>
+          <p id="footerAbout" class="js-footer-about mt-3 text-sm leading-relaxed text-mist/80">Cicowp-ca | Write Whatever Your Heart Wants. A structured hub for core public service links and navigation.</p>
+        </section>
+
+        <section>
+          <h3 class="font-display text-lg font-semibold">Pages</h3>
+          <div class="mt-3 grid gap-2 text-sm text-mist/80">
+            <a class="transition hover:text-white" data-nav="home" href="/">Home</a>
+            <a class="transition hover:text-white" data-nav="check" href="/check-status.html">Check Status</a>
+            <a class="transition hover:text-white" data-nav="owp" href="/page.html">OWP</a>
+            <a class="transition hover:text-white" data-nav="contact" href="/contact.html">Contact</a>
+          </div>
+        </section>
+
+        <section>
+          <h3 class="font-display text-lg font-semibold">Useful Links</h3>
+          <div class="js-footer-links mt-3 grid gap-2 text-sm text-mist/80">
+            <a class="transition hover:text-white" href="https://www.canada.ca/en/government/dept.html">Departments and agencies</a>
+            <a class="transition hover:text-white" href="https://www.canada.ca/en/government/publicservice.html">Public Service and Military</a>
+            <a class="transition hover:text-white" href="https://www.canada.ca/en/news.html">News</a>
+            <a class="transition hover:text-white" href="https://open.canada.ca/en">Open Government</a>
+            <a class="transition hover:text-white" href="https://www.canada.ca/en/government/system/laws.html">Treaties, laws and regulations</a>
+            <a class="transition hover:text-white" href="https://www.canada.ca/en/transparency/reporting.html">Government-wide reporting</a>
+            <a class="transition hover:text-white" href="https://www.pm.gc.ca/en">Prime Minister</a>
+            <a class="transition hover:text-white" href="https://www.canada.ca/en/government/system.html">About government</a>
+          </div>
+        </section>
+      </div>
+
+      <div class="border-t border-white/10 py-5">
+        <p class="mx-auto max-w-7xl px-4 text-xs text-mist/70 sm:px-6 lg:px-8">
+          <span id="year"></span> <span id="footerCopyrightText">Cicowp-ca. All rights reserved.</span>
+        </p>
+      </div>
+    </footer>
+
+    <script src="/admin/assets/public-site.js"></script>
+    <script>
+      let topics = [
+        {
+          title: "Benefits",
+          description: "EI, family and sickness leave, pensions, housing, student aid, disabilities.",
+          href: "https://www.canada.ca/en/services/benefits.html",
+        },
+        {
+          title: "Business and industry",
+          description: "Starting a business, permits, copyrights, support, and government selling.",
+          href: "https://www.canada.ca/en/services/business.html",
+        },
+        {
+          title: "Canada and the world",
+          description: "Foreign policy, trade agreements, development work, and global issues.",
+          href: "https://www.international.gc.ca/world-monde/index.aspx?lang=eng",
+        },
+        {
+          title: "Culture, history and sport",
+          description: "Arts, media, heritage, official languages, and national identity.",
+          href: "https://www.canada.ca/en/services/culture.html",
+        },
+        {
+          title: "Environment and natural resources",
+          description: "Weather, climate, agriculture, wildlife, pollution, and conservation.",
+          href: "https://www.canada.ca/en/services/environment.html",
+        },
+        {
+          title: "Health",
+          description: "Food, nutrition, diseases, vaccines, drugs, safety, and recalls.",
+          href: "https://www.canada.ca/en/services/health.html",
+        },
+        {
+          title: "Indigenous peoples",
+          description: "Programs and services for First Nations, Inuit, and Metis communities.",
+          href: "https://www.canada.ca/en/indigenous-northern-affairs.html",
+        },
+        {
+          title: "Money and finances",
+          description: "Personal finance, credit reports, fraud protection, and education support.",
+          href: "https://www.canada.ca/en/services/finance.html",
+        },
+        {
+          title: "National security and defence",
+          description: "Military, border security, cyber security, and counter-terrorism.",
+          href: "https://www.canada.ca/en/services/defence.html",
+        },
+        {
+          title: "Policing, justice and emergencies",
+          description: "Public safety, justice system, preparedness, and victim services.",
+          href: "https://www.canada.ca/en/services/policing.html",
+        },
+        {
+          title: "Science and innovation",
+          description: "Research on health, environment, space, grants, and funding.",
+          href: "https://www.canada.ca/en/services/science.html",
+        },
+        {
+          title: "Taxes",
+          description: "Income tax, payroll, GST/HST, limits, credits, and charities.",
+          href: "https://www.canada.ca/en/services/taxes.html",
+        },
+        {
+          title: "Transport and infrastructure",
+          description: "Aviation, marine, road, rail, dangerous goods, and projects.",
+          href: "https://www.canada.ca/en/services/transport.html",
+        },
+        {
+          title: "Travel and tourism",
+          description: "Travel advice, advisories, passports, events, attractions, and visits.",
+          href: "https://travel.gc.ca/",
+        },
+        {
+          title: "Veterans",
+          description: "Services for current and former military, RCMP, and families.",
+          href: "https://www.canada.ca/en/services/veterans-military.html",
+        },
+        {
+          title: "Youth",
+          description: "Programs and services for teenagers and young adults.",
+          href: "https://www.canada.ca/en/services/youth.html",
+        },
+      ];
+
+      const topicsGrid = document.getElementById("topicsGrid");
+      const topicSearch = document.getElementById("topicSearch");
+      const topicEmpty = document.getElementById("topicEmpty");
+
+      function buildTopicCard(topic) {
+        return `
+          <a href="${topic.href}" target="_blank" rel="noopener noreferrer" class="group card-shine relative rounded-2xl border border-ink/10 bg-mist p-5 transition hover:-translate-y-1 hover:border-pine/35 hover:bg-white hover:shadow-soft">
+            <span class="block h-1 w-16 rounded-full bg-gradient-to-r from-pine to-sky"></span>
+            <h3 class="mt-4 font-display text-xl font-semibold text-ink">${topic.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink/70">${topic.description}</p>
+            <span class="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-pine">Open topic
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4 transition group-hover:translate-x-1">
+                <path fill-rule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.69l-2.72-2.72a.75.75 0 1 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 1 1-1.06-1.06l2.72-2.72H3.75A.75.75 0 0 1 3 10Z" clip-rule="evenodd" />
+              </svg>
+            </span>
+          </a>
+        `;
+      }
+
+      function renderTopics(query = "") {
+        const q = query.trim().toLowerCase();
+        const filtered = topics.filter((topic) => {
+          return topic.title.toLowerCase().includes(q) || topic.description.toLowerCase().includes(q);
+        });
+
+        topicsGrid.innerHTML = filtered.map(buildTopicCard).join("");
+        topicEmpty.classList.toggle("hidden", filtered.length > 0);
+      }
+
+      renderTopics();
+
+      window.__setDynamicTopics = (nextTopics) => {
+        if (!Array.isArray(nextTopics) || nextTopics.length === 0) {
+          return;
+        }
+        topics = nextTopics;
+        renderTopics(topicSearch.value || "");
+      };
+
+      topicSearch.addEventListener("input", (event) => {
+        renderTopics(event.target.value);
+      });
+
+      const menuButton = document.getElementById("menuButton");
+      const mobileMenu = document.getElementById("mobileMenu");
+
+      menuButton.addEventListener("click", () => {
+        const expanded = menuButton.getAttribute("aria-expanded") === "true";
+        menuButton.setAttribute("aria-expanded", String(!expanded));
+        mobileMenu.classList.toggle("hidden", expanded);
+      });
+
+      const revealItems = document.querySelectorAll(".reveal");
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+
+      revealItems.forEach((item) => revealObserver.observe(item));
+
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
