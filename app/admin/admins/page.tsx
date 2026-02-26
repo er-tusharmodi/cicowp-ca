@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import {
   Table,
   TableBody,
@@ -41,8 +42,6 @@ export default function AdminsPage() {
   };
 
   const handleDelete = async (id: string, email: string) => {
-    if (!confirm(`Are you sure you want to delete admin: ${email}?`)) return;
-
     try {
       const response = await fetch(`/api/admins/${id}`, {
         method: "DELETE",
@@ -133,14 +132,21 @@ export default function AdminsPage() {
                           : "Never"}
                       </TableCell>
                       <TableCell className="text-right">
-                        <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => handleDelete(admin._id!, admin.email)}
-                          disabled={isCurrentUser}
+                        <ConfirmDeleteDialog
+                          title="Delete admin?"
+                          description={`This will permanently remove ${admin.email}.`}
+                          onConfirm={() =>
+                            handleDelete(admin._id!, admin.email)
+                          }
                         >
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
+                          <Button
+                            variant="destructive"
+                            size="sm"
+                            disabled={isCurrentUser}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </ConfirmDeleteDialog>
                       </TableCell>
                     </TableRow>
                   );

@@ -17,8 +17,7 @@ export default function CheckStatusPage() {
   } | null>(null);
 
   useEffect(() => {
-    // Reveal animation observer
-    const revealItems = document.querySelectorAll(".reveal");
+    // Reveal animation observer (reruns when dynamic content renders)
     const revealObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -31,12 +30,19 @@ export default function CheckStatusPage() {
       { threshold: 0.15 },
     );
 
-    revealItems.forEach((item) => revealObserver.observe(item));
+    const rafId = requestAnimationFrame(() => {
+      document.querySelectorAll(".reveal").forEach((item) => {
+        if (!item.classList.contains("is-visible")) {
+          revealObserver.observe(item);
+        }
+      });
+    });
 
     return () => {
-      revealItems.forEach((item) => revealObserver.unobserve(item));
+      cancelAnimationFrame(rafId);
+      revealObserver.disconnect();
     };
-  }, []);
+  }, [result]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

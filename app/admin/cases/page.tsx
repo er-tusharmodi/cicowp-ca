@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import {
   Table,
   TableBody,
@@ -69,8 +70,6 @@ export default function CasesPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this case?")) return;
-
     try {
       const response = await fetch(`/api/cases/${id}`, {
         method: "DELETE",
@@ -204,13 +203,15 @@ export default function CasesPage() {
                               <Edit className="w-4 h-4" />
                             </Button>
                           </Link>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleDelete(caseItem._id!)}
+                          <ConfirmDeleteDialog
+                            title="Delete case?"
+                            description="This will permanently delete this case."
+                            onConfirm={() => handleDelete(caseItem._id!)}
                           >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
+                            <Button variant="destructive" size="sm">
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </ConfirmDeleteDialog>
                         </div>
                       </TableCell>
                     </TableRow>

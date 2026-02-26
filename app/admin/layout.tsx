@@ -13,9 +13,21 @@ import {
   FileText,
   Tag,
   Settings,
+  Download,
+  Upload,
+  Database,
+  ChevronDown,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel,
+} from "@/components/ui/dropdown-menu";
 
 const navigation = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
@@ -34,6 +46,8 @@ export default function AdminLayout({
   const pathname = usePathname();
   const { data: session } = useSession();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   if (pathname === "/admin/login") {
     return <>{children}</>;
@@ -41,6 +55,39 @@ export default function AdminLayout({
 
   const handleSignOut = () => {
     signOut({ callbackUrl: "/admin/login" });
+  };
+
+  const isSuperAdmin = session?.user?.role === "super-admin";
+
+  const handleUploadDB = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const text = await file.text();
+      const data = JSON.parse(text);
+
+      const response = await fetch("/api/admin/db-import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert(`Import successful!\n${JSON.stringify(result.results, null, 2)}`);
+        window.location.reload();
+      } else {
+        alert(`Import failed: ${result.error}`);
+      }
+    } catch (error: any) {
+      alert(`Error: ${error.message}`);
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
   };
 
   return (
@@ -128,6 +175,62 @@ export default function AdminLayout({
               <Menu className="w-6 h-6" />
             </button>
             <div className="flex items-center space-x-4 ml-auto">
+              {isSuperAdmin && (
+                <>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="sm">
+                        <Database className="w-4 h-4 mr-2" />
+                        Database
+                        <ChevronDown className="w-4 h-4 ml-2" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuLabel>Download</DropdownMenuLabel>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          window.location.href = "/api/admin/db-export";
+                        }}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Full DB
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          window.location.href = "/api/admin/db-export/cases";
+                        }}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Cases
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onClick={() => {
+                          window.location.href = "/api/admin/db-export/topics";
+                        }}
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        Topics
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuLabel>Import</DropdownMenuLabel>
+                      <DropdownMenuItem
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploading}
+                      >
+                        <Upload className="w-4 h-4 mr-2" />
+                        {uploading ? "Uploading..." : "Upload DB"}
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".json"
+                    className="hidden"
+                    onChange={handleUploadDB}
+                  />
+                </>
+              )}
               <div className="text-sm text-muted-foreground">
                 {new Date().toLocaleDateString("en-CA", {
                   weekday: "long",

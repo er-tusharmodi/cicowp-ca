@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import {
   Table,
   TableBody,
@@ -55,8 +56,6 @@ export default function TopicsManagementPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this topic?")) return;
-
     try {
       const response = await fetch(`/api/topics/${id}`, {
         method: "DELETE",
@@ -171,14 +170,19 @@ export default function TopicsManagementPage() {
                               <Edit className="h-4 w-4" />
                             </Button>
                           </Link>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDelete(topic._id!)}
-                            className="text-destructive hover:text-destructive"
+                          <ConfirmDeleteDialog
+                            title="Delete topic?"
+                            description="This will permanently delete this topic."
+                            onConfirm={() => handleDelete(topic._id!)}
                           >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-destructive hover:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </ConfirmDeleteDialog>
                         </div>
                       </TableCell>
                     </TableRow>

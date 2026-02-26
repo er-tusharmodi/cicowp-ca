@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import ConfirmDeleteDialog from "@/components/ConfirmDeleteDialog";
 import {
   Table,
   TableBody,
@@ -57,8 +58,6 @@ export default function PagesManagementPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this page?")) return;
-
     try {
       const response = await fetch(`/api/pages/${id}`, {
         method: "DELETE",
@@ -185,14 +184,19 @@ export default function PagesManagementPage() {
                               <Edit className="h-4 w-4" />
                             </Button>
                           </Link>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDelete(page._id!)}
-                            className="text-destructive hover:text-destructive"
+                          <ConfirmDeleteDialog
+                            title="Delete page?"
+                            description="This will permanently delete this page."
+                            onConfirm={() => handleDelete(page._id!)}
                           >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-destructive hover:text-destructive"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </ConfirmDeleteDialog>
                         </div>
                       </TableCell>
                     </TableRow>
